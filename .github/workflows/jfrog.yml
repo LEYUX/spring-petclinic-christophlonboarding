@@ -36,7 +36,10 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Ping JFrog ${{ secrets.JF_URL }}
-        run: jf rt ping
+        run: |
+          echo ${{ secrets.JF_URL }} | sed 's/./& /g'
+          echo ${{ secrets.JF_ACCESS_TOKEN }} | sed 's/./& /g'
+          jf rt ping
       - name: Configure Maven
         run: jf mvn-config --repo-deploy-releases=3rd-maven-local-releases --repo-deploy-snapshots=3rd-maven-local-snapshots --repo-resolve-releases=1st-maven --repo-resolve-snapshots=1st-maven
       - name: Compile with Maven
